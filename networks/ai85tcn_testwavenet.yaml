@@ -1,0 +1,23 @@
+# CHW (big data) configuration for MNIST
+
+arch: ai85testwavenet
+dataset: PEDALNET
+
+# Define layer parameters in order of the layer sequence
+layers:
+#0 input_layer ai8x.Conv1d chi1o8 k3d1
+- out_offset: 0x0000 #0x2000
+  processors: 0x0000000000000001
+  in_dim: [1024,1]
+  data_format: CHW  #better since we only have 1 channel..
+  op: conv1d
+  pad: 0
+  kernel_size: 3
+#0 linear_mix ai8x.Conv1d chi8o1 k1d1
+- out_offset: 0x0000 #0x2000
+  processors: 0x0000000000000FF0
+  op: conv1d
+  pad: 0
+  kernel_size: 1
+  output_width: 32
+

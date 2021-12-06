@@ -1,0 +1,56 @@
+# CHW (big data) configuration for MNIST
+
+arch: ai85simplewavenet
+dataset: PEDALNET
+
+# Define layer parameters in order of the layer sequence
+layers:
+#0 input_layer ai8x.Conv1d chi1o8 k3dil1
+- out_offset: 0x0000 #0x2000
+  processors: 0x0000000000000001
+  in_dim: [1024,1]
+  data_format: CHW  #better since we only have 1 channel..
+  op: conv1d
+  pad: 0
+  kernel_size: 3
+#hidden 0 ai8x.Conv1d chi8o8 k3dil1
+- out_offset: 0x0000 #0x2000
+  processors: 0x0000000000000FF0
+  op: conv1d
+  activate: ReLU
+  dilation: 1
+  pad: 0
+  kernel_size: 3
+#hidden 1 ai8x.Conv1d chi8o8 k3dil2
+- out_offset: 0x0000 #0x2000
+  processors: 0x00000000000FF000
+  op: conv1d
+  activate: ReLU
+  dilation: 2
+  pad: 0
+  kernel_size: 3
+#hidden 2 ai8x.Conv1d chi8o8 k3dil4
+- out_offset: 0x0000 #0x2000
+  processors: 0x0000000000000FF0
+  op: conv1d
+  activate: ReLU
+  dilation: 4
+  pad: 0
+  kernel_size: 3
+#hidden 3 ai8x.Conv1d chi8o8 k3dil8
+- out_offset: 0x0020 #0x2000
+  processors: 0x00000000000FF000
+  op: conv1d
+  activate: ReLU
+  dilation: 8
+  pad: 0
+  kernel_size: 3
+
+#0 linear_mix ai8x.Conv1d chi8o1 k1dil1
+- out_offset: 0x0000 #0x2000
+  processors: 0x0000000000000FF0
+  op: conv1d
+  pad: 0
+  kernel_size: 1
+  output_width: 32
+

@@ -1,0 +1,1 @@
+ai8xize.py --boost 2.5 --verbose --log --test-dir output/tests --prefix testwavenet --checkpoint-file trained/template_testwavenet.pth.tar --config-file networks/ai85tcn_testwavenet.yaml --device MAX78000 --board-name FTHR_RevA --overwrite --compact-data --mexpress --timer 0 --display-checkpoint
