@@ -1,0 +1,106 @@
+# Simplewavenet, ch12 dil_depth 8, receptive field 512
+
+arch: ai85simplewavenet
+dataset: PEDALNET
+
+# Define layer parameters in order of the layer sequence
+layers:
+#0 input_layer ai8x.Conv1d chi1o12 k3dil1
+- out_offset: 0x0000 #0x2000
+  processors: 0x0000000000000001
+  in_dim: [1024, 1]
+  in_sequences: -1
+  data_format: CHW  #better since we only have 1 channel..
+  op: conv1d
+  pad: 0
+  kernel_size: 3
+#hidden 0 ai8x.Conv1d chi12o12 k3dil1
+- out_offset: 0x0000 #0x2000
+  processors: 0x000000000000FFF0
+  in_dim: [1022,1]
+  in_sequences: 0
+  op: conv1d
+  activate: ReLU
+  dilation: 1
+  pad: 0
+  kernel_size: 3
+#hidden 1 ai8x.Conv1d chi12o12 k3dil2
+- out_offset: 0x0000 #0x2000
+  processors: 0x000000000FFF0000
+  in_dim: [1020,1]
+  in_sequences: 1
+  op: conv1d
+  activate: ReLU
+  dilation: 2
+  pad: 0
+  kernel_size: 3
+#hidden 2 ai8x.Conv1d chi12o12 k3dil4
+- out_offset: 0x0000 #0x2000
+  processors: 0x000000000000FFF0
+  in_dim: [1016,1]
+  in_sequences: 2
+  op: conv1d
+  activate: ReLU
+  dilation: 4
+  pad: 0
+  kernel_size: 3
+#hidden 3 ai8x.Conv1d chi12o12 k3dil8
+- out_offset: 0x0020 #izer complains because of use of hardware dilation
+  processors: 0x000000000FFF0000
+  in_dim: [1008,1]
+  in_sequences: 3
+  op: conv1d
+  activate: ReLU
+  dilation: 8
+  pad: 0
+  kernel_size: 3
+#hidden 4 ai8x.Conv1d chi12o12 k3dil16
+- out_offset: 0x0040 #0x2000
+  processors: 0x000000000000FFF0
+  in_dim: [992,1]
+  in_sequences: 4
+  op: conv1d
+  activate: ReLU
+  dilation: 16
+  pad: 0
+  kernel_size: 3
+#hidden 5 ai8x.Conv1d chi12o12 k3dil32
+- out_offset: 0x0080 #0x2000
+  processors: 0x000000000FFF0000
+  in_dim: [960,1]
+  in_sequences: 5
+  op: conv1d
+  activate: ReLU
+  dilation: 32
+  pad: 0
+  kernel_size: 3
+#hidden 6 ai8x.Conv1d chi12o12 k3dil64
+- out_offset: 0x0100 #0x2000
+  processors: 0x000000000000FFF0
+  in_dim: [896,1]
+  in_sequences: 6
+  op: conv1d
+  activate: ReLU
+  dilation: 64
+  pad: 0
+  kernel_size: 3
+#hidden 7 ai8x.Conv1d chi12o12 k3dil128
+- out_offset: 0x0200 #0x2000
+  processors: 0x000000000FFF0000
+  in_dim: [768,1]
+  in_sequences: 7
+  op: conv1d
+  activate: ReLU
+  dilation: 128
+  pad: 0
+  kernel_size: 3
+
+#0 linear_mix ai8x.Conv1d chi8o1 k1dil1
+- out_offset: 0x0000 #0x2000
+  processors: 0x000000000000FFF0
+  in_dim: [512,1]
+  in_sequences: 8
+  op: conv1d
+  pad: 0
+  kernel_size: 1
+  output_width: 32
